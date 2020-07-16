@@ -10,23 +10,13 @@ function onStart(){
     screen.innerHTML = currentValue;
     screen.setAttribute("id", "screen")
     document.body.appendChild(screen);
-    // var counter = 0
-    // div = document.createElement("div")
-    // div.setAttribute("id", "div1")
-    // document.body.appendChild(div)
-    // var divCounter = 1
+    var counter = 0
+    div = document.createElement("div")
+    div.setAttribute("id", "div1")
+    document.body.appendChild(div)
+    var divCounter = 1
     for(var i = 0; i < buttons.length; i++){
-        // if(counter === 3){
-        //     counter = 0
-        //     divCounter ++
-        //     div = document.createElement("div")
-        //     var attributes ={
-        //         id: [("div"+divCounter)],
-        //         // style: ["clear: right"]
-        //     }
-        //     setElementAttribute(button, attributes)
-        //     document.body.appendChild(div)
-        // };
+        [div, counter, divCounter] = buttonRow(div, counter, divCounter)
         button = document.createElement("button");
         var attributes= {
             class: ["numberbutton", "button"],
@@ -35,14 +25,11 @@ function onStart(){
         }
         button = setElementAttribute(button, attributes)
         button.innerHTML = buttons[i];
-        
-        //trade omments when you want to try align the buttons properly
-        document.body.appendChild(button)
-        // var currentDiv = document.getElementById("div"+divCounter)
-        // currentDiv.appendChild(button);
-        // counter ++
+        div.appendChild(button);
+        counter++
     }
     for (var i = 0; i < operators.length; i++) {
+        [div, counter, divCounter] = buttonRow(div, counter, divCounter)
         button = document.createElement("button");
         var attributes = {
             class: ["operatorbutton", "button"],
@@ -51,7 +38,9 @@ function onStart(){
         }
         button = setElementAttribute(button, attributes)
         button.innerHTML = operators[i];
-        document.body.appendChild(button);
+        console.log("reached")
+        div.appendChild(button);
+        counter++
     }
 }
 
@@ -65,7 +54,6 @@ function buttonPress(event){
 }
 
 function operatorPress(event){
-    //switch statement
     var value = Number(currentValue);
     
     if (event.target.id === "="){
@@ -92,6 +80,22 @@ function operatorPress(event){
     }   
     
 }
+
+function buttonRow(newDiv, counter, divCounter){
+    if (counter === 3) {
+        counter = 0
+        divCounter++
+        newDiv = document.createElement("div")
+        var divId = "div" + divCounter
+        var attributes = {
+            id: [divId]
+        }
+        setElementAttribute(newDiv, attributes)
+        document.getElementById("main").appendChild(newDiv)
+    };
+    return [newDiv,counter,divCounter]
+}
+
 function calculate(value){
     var result
     switch (lastOperator) {
